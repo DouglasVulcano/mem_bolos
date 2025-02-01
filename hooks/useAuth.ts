@@ -1,21 +1,12 @@
-"use client";
+import { useEffect } from "react";
+import { useAuthStore } from "@/stores/useAuthStore";
 
-import { onAuthStateChanged, User } from "firebase/auth";
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import auth from "@/config/firebase";
-
-export function useAuth(redirect: boolean = true) {
-  const [user, setUser] = useState<User | null>(null);
-  const router = useRouter();
+export function useAuth() {
+  const { user, isAuthenticated, checkAuthState } = useAuthStore();
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
-      if (redirect && !currentUser) router.push("/admin");
-    });
-    return () => unsubscribe();
-  }, [redirect, router]);
+    checkAuthState();
+  }, [checkAuthState]);
 
-  return { user };
+  return { user, isAuthenticated };
 }
