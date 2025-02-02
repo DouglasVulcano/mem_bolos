@@ -2,29 +2,19 @@
 
 import Image from "next/image";
 import { useProducts } from "@/hooks/useProducts";
-import StatsArea from "@/components/StatsArea";
-import { useOrders } from "@/hooks/useOrders";
 
 export default function AdminDashboard() {
   const { products } = useProducts();
-  const { orders } = useOrders();
-
-  const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat("pt-BR", {
-      style: "currency",
-      currency: "BRL",
-    }).format(value);
-  };
 
   return (
     <>
-      <StatsArea />
+      <h1>Admin Dashboard</h1>
       <div>
         {products.map((product) => (
           <div key={product.id}>
             <h2>{product.title}</h2>
             <p>{product.description}</p>
-            <p>{formatCurrency(product.price)}</p>
+            <p>{product.price}</p>
             <p>{product.category}</p>
             <p>{product.category_id}</p>
             <Image
@@ -33,14 +23,6 @@ export default function AdminDashboard() {
               height={500}
               alt={product.title}
             />
-          </div>
-        ))}
-      </div>
-      <hr />
-      <div>
-        {orders.map((order) => (
-          <div key={order.id}>
-            <h2>{order.title}</h2>
           </div>
         ))}
       </div>
