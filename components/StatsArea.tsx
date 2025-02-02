@@ -1,14 +1,17 @@
-import { TrendingUp, DollarSign } from "lucide-react";
-import React, { useState } from "react";
 import { useFilteredOrders, DateFilterType } from "@/hooks/useFilteredOrders";
+import { TrendingUp, DollarSign } from "lucide-react";
+import WeeklySalesChart from "./WeeklySalesChart";
 import TopProductsList from "./TopProductsList";
+import { useOrders } from "@/hooks/useOrders";
 import { formatCurrency } from "@/utils";
+import React, { useState } from "react";
 import StatCard from "./StatsCard";
 
 export default function StatsArea() {
   const [dateFilter, setDateFilter] = useState<DateFilterType>("total");
   const { totalSales, totalRevenue, topProducts } =
     useFilteredOrders(dateFilter);
+  const { orders } = useOrders();
 
   return (
     <>
@@ -26,20 +29,22 @@ export default function StatsArea() {
           <option value="30days">Últimos 30 dias</option>
         </select>
       </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        <StatCard
-          icon={<TrendingUp className="h-10 w-10 text-indigo-600" />}
-          label="Total de Vendas"
-          value={`${totalSales}`}
-        />
-        <StatCard
-          icon={<DollarSign className="h-10 w-10 text-emerald-600" />}
-          label="Receita Total"
-          value={formatCurrency(totalRevenue)}
-        />
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+        <div className="space-y-5">
+          <StatCard
+            icon={<TrendingUp className="h-10 w-10 text-indigo-600" />}
+            label="Total de Vendas"
+            value={`${totalSales}`}
+          />
+          <StatCard
+            icon={<DollarSign className="h-10 w-10 text-emerald-600" />}
+            label="Receita Total"
+            value={formatCurrency(totalRevenue)}
+          />
+        </div>
         <TopProductsList topProducts={topProducts} />
       </div>
+      <WeeklySalesChart orders={orders} />
     </>
   );
 }

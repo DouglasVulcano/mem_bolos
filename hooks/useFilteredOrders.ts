@@ -20,64 +20,62 @@ export function useFilteredOrders(dateFilter: DateFilterType): FilteredData {
 
   const getFilteredData = useMemo((): FilteredData => {
     const today = new Date();
-    const yesterday = new Date();
-    yesterday.setDate(today.getDate() - 1);
+    today.setHours(0, 0, 0, 0); // Zera as horas para evitar problemas
 
-    const getDateRange = () => {
-      switch (dateFilter) {
-        case "today":
-          return { start: new Date(today.setHours(0, 0, 0, 0)), end: today };
-        case "yesterday":
-          return {
-            start: new Date(yesterday.setHours(0, 0, 0, 0)),
-            end: new Date(yesterday.setHours(23, 59, 59, 999)),
-          };
-        case "7days":
-          return {
-            start: new Date(new Date().setDate(today.getDate() - 7)),
-            end: today,
-          };
-        case "15days":
-          return {
-            start: new Date(new Date().setDate(today.getDate() - 15)),
-            end: today,
-          };
-        case "30days":
-          return {
-            start: new Date(new Date().setDate(today.getDate() - 30)),
-            end: today,
-          };
-        default:
-          return null;
-      }
+    const yesterday = new Date(today);
+    yesterday.setDate(yesterday.getDate() - 1);
+
+    const createDateRange = (days: number) => {
+      const start = new Date();
+      start.setDate(today.getDate() - days);
+      start.setHours(0, 0, 0, 0);
+
+      const end = new Date();
+      end.setHours(23, 59, 59, 999);
+
+      return { start, end };
     };
 
-    const dateRange = getDateRange();
+    const dateRanges: Record<
+      DateFilterType,
+      { start: Date; end: Date } | null
+    > = {
+      today: {
+        start: today,
+        end: new Date(new Date(today).setHours(23, 59, 59, 999)),
+      },
+      yesterday: {
+        start: yesterday,
+        end: new Date(new Date(yesterday).setHours(23, 59, 59, 999)),
+      },
+      "7days": createDateRange(7),
+      "15days": createDateRange(15),
+      "30days": createDateRange(30),
+      total: null,
+    };
+
+    const dateRange = dateRanges[dateFilter];
     const filteredOrders = dateRange
-      ? orders.filter(
-          (order) =>
-            order.sale_date &&
-            new Date(order.sale_date) >= dateRange.start &&
-            new Date(order.sale_date) <= dateRange.end
-        )
+      ? orders.filter((order) => {
+          const saleDate = new Date(order.createdAt);
+          return saleDate >= dateRange.start && saleDate <= dateRange.end;
+        })
       : orders;
 
-    const totalSales = filteredOrders.reduce(
-      (sum, order) => sum + order.quantity,
-      0
-    );
+    const totalSales = filteredOrders.length;
+
     const totalRevenue = filteredOrders.reduce(
-      (sum, order) => sum + order.price * order.quantity,
+      (sum, order) => sum + order.price,
       0
     );
 
     const productSales = filteredOrders.reduce<
       Record<string, { id: string; title: string; sales: number }>
     >((acc, order) => {
-      if (!acc[order.id]) {
-        acc[order.id] = { id: order.id, title: order.title, sales: 0 };
-      }
-      acc[order.id].sales += order.quantity;
+      order.items.forEach(({ id, title, quantity }) => {
+        if (!acc[id]) acc[id] = { id, title, sales: 0 };
+        acc[id].sales += quantity;
+      });
       return acc;
     }, {});
 

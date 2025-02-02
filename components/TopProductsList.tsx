@@ -25,7 +25,7 @@ export default function TopProductsList({ topProducts }: TopProductsListProps) {
                 <span className="text-sm text-gray-600">{product.title}</span>
               </div>
               <span className="text-sm font-medium text-gray-900">
-                {product.sales} vendas
+                {product.sales} unidades
               </span>
             </div>
           ))

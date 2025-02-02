@@ -1,12 +1,6 @@
 import { create } from "zustand";
 import { Order } from "@/types/Order";
-import {
-  getDocs,
-  getDoc,
-  collection,
-  DocumentData,
-  Timestamp,
-} from "firebase/firestore";
+import { getDocs, collection, Timestamp } from "firebase/firestore";
 import { db } from "@/config/firebase";
 
 interface OrdersStore {
@@ -25,32 +19,17 @@ export const useOrdersStore = create<OrdersStore>((set) => ({
         ordersSnapshot.docs.map(async (orderDoc) => {
           const orderData = orderDoc.data();
 
-          let categoryTitle = "";
-          let categoryId = "";
-          if (orderData.category) {
-            const categoryDoc = await getDoc(orderData.category);
-
-            if (categoryDoc.exists()) {
-              const categoryData = categoryDoc.data() as DocumentData;
-              categoryTitle = categoryData.title;
-              categoryId = categoryDoc.id;
-            }
-          }
-
-          // Converte Firestore Timestamp para Date
-          let saleDate: Date | null = null;
-          if (orderData.sale_date instanceof Timestamp) {
-            saleDate = orderData.sale_date.toDate();
-          }
+          let saleDate: Date = new Date();
+          if (orderData.createdAt instanceof Timestamp)
+            saleDate = orderData.createdAt.toDate();
 
           return {
-            id: orderDoc.id,
-            title: orderData.title,
+            id: orderData.id,
+            createdAt: saleDate,
+            customerName: orderData.customerName,
+            items: orderData.items,
             price: orderData.price,
-            quantity: orderData.quantity,
-            sale_date: saleDate,
-            category: categoryTitle,
-            category_id: categoryId,
+            shippingAddress: orderData.shippingAddress,
           };
         })
       );

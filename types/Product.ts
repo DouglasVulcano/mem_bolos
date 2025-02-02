@@ -5,5 +5,4 @@ export type Product = {
   description: string;
   image: string;
   category: string;
-  category_id: string;
 };
