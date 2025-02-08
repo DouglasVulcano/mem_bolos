@@ -8,6 +8,7 @@ interface InputFieldProps {
   value: string;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   error?: string;
+  disabled?: boolean;
 }
 
 export function InputField({
@@ -18,6 +19,7 @@ export function InputField({
   value,
   onChange,
   error,
+  disabled = false,
 }: InputFieldProps) {
   return (
     <div className="mb-4">
@@ -34,6 +36,7 @@ export function InputField({
         placeholder={placeholder}
         value={value}
         onChange={onChange}
+        disabled={disabled}
       />
       {error && <p className="text-red-500 text-xs italic">{error}</p>}
     </div>

@@ -13,9 +13,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "M&M Bolos",
+  title: "M&M Bolos e doces personalizados",
   description:
-    "Faça suas encomendas com a M&M Bolos. Bolos de todos os tamanhos e sabores, kit para casamentos, aniversários e muito mais.",
+    "Faça sua encomenda com a M&M Doces. Bolos e doces personalizados.",
 };
 
 export default function RootLayout({
@@ -24,7 +24,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="pt-br">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >

@@ -8,8 +8,8 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { Order } from "@/types/Order";
-import { generateWeeklyPeriods } from "../utils/dateUtils";
-import { prepareChartData } from "../utils/chartUtils";
+import { generateWeeklyPeriods } from "@/utils/dateUtils";
+import { prepareChartData } from "@/utils/chartUtils";
 import ChartTooltip from "./ChartTooltip";
 
 interface WeeklySalesChartProps {

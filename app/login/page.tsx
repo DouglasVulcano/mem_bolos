@@ -42,7 +42,7 @@ export default function Admin() {
             </div>
           </form>
           <p className="text-center text-gray-500 text-xs">
-            &copy; {new Date().getFullYear()} M&M Bolos. Todos os direitos
+            &copy; {new Date().getFullYear()} M&M Doces. Todos os direitos
             reservados.
           </p>
         </div>

@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { AdminHeader } from "@/components/AdminHeader";
+import { AdminHeader } from "@/app/admin/components/AdminHeader";
 
 export default function AdminLayout({
   children,
