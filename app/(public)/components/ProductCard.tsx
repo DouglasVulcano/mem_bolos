@@ -1,8 +1,9 @@
 "use client";
 
-import { Share, ShoppingCart, CheckCircle } from "lucide-react";
+import { Share, ShoppingCart, CheckCircle, Eye } from "lucide-react";
 import { useCartStore } from "@/stores/useCartStore";
 import { handleShare } from "@/utils/shareUtils";
+import { useRouter } from "next/navigation";
 import { Product } from "@/types/Product";
 import Image from "next/image";
 
@@ -11,12 +12,13 @@ interface ProductCardProps {
 }
 
 export default function ProductCard({ product }: ProductCardProps) {
-  const { cart, addToCart } = useCartStore();
+  const { cart, addToCart, removeFromCart } = useCartStore();
   const isInCart = cart.some((item) => item.id === product.id);
+  const router = useRouter();
 
   return (
-    <div className="bg-white rounded-xl shadow-lg p-4 transition-all hover:shadow-xl hover:scale-[1.02]">
-      {/* Imagem do Produto */}
+    <div className="bg-white rounded-xl shadow-md p-4 flex flex-col">
+      {/* Imagem */}
       <div className="relative w-full h-48">
         <Image
           src={product.image}
@@ -27,8 +29,8 @@ export default function ProductCard({ product }: ProductCardProps) {
         />
       </div>
 
-      {/* Detalhes do Produto */}
-      <div className="mt-4 space-y-2">
+      {/* Informações */}
+      <div className="mt-4 flex flex-col gap-1">
         <h4 className="text-lg font-semibold truncate">{product.title}</h4>
         <p className="text-gray-500 text-sm line-clamp-2">
           {product.description}
@@ -38,31 +40,39 @@ export default function ProductCard({ product }: ProductCardProps) {
         </p>
       </div>
 
-      {/* Seção de Ações */}
-      <div className="mt-4 flex flex-col gap-3">
-        {isInCart ? (
-          <div className="w-full flex items-center justify-center gap-2 bg-green-100 text-green-600 px-4 py-2 rounded-lg">
-            <CheckCircle size={18} />
-            Já foi adicionado
-          </div>
-        ) : (
-          <button
-            onClick={() => addToCart(product)}
-            className="w-full flex items-center justify-center gap-2 bg-pink-500 text-white px-4 py-2 rounded-lg hover:bg-pink-600 transition-all active:scale-95"
-          >
-            <ShoppingCart size={18} />
-            Adicionar ao Carrinho
-          </button>
-        )}
-
-        {/* Botão de Compartilhar */}
+      {/* Ações */}
+      <div className="mt-4 flex flex-col gap-2">
         <button
-          onClick={() => handleShare(product)}
-          className="w-full flex items-center justify-center gap-2 text-pink-500 border border-pink-500 px-4 py-2 rounded-lg hover:bg-pink-50 transition-all active:scale-95"
+          onClick={() =>
+            isInCart ? removeFromCart(product.id) : addToCart(product)
+          }
+          className={`w-full flex items-center justify-center gap-2 px-4 py-2 rounded-lg transition-all active:scale-95 ${
+            isInCart
+              ? "bg-green-100 text-green-600 hover:bg-green-200"
+              : "bg-pink-500 text-white hover:bg-pink-600"
+          }`}
         >
-          <Share size={18} />
-          Compartilhar
+          {isInCart ? <CheckCircle size={18} /> : <ShoppingCart size={18} />}
+          {isInCart ? "Remover" : "Comprar"}
         </button>
+
+        {/* Ações secundárias */}
+        <div className="flex gap-2">
+          <button
+            onClick={() => handleShare(product)}
+            className="w-1/3 flex items-center justify-center text-gray-600 border border-gray-300 px-3 py-2 rounded-lg hover:bg-gray-100 transition-all active:scale-95"
+          >
+            <Share size={18} />
+          </button>
+
+          <button
+            onClick={() => router.push(`/prod/${product.id}`)}
+            className="flex-1 flex items-center justify-center gap-2 bg-orange-800 text-white px-4 py-2 rounded-lg hover:bg-rose-600 transition-all active:scale-95"
+          >
+            <Eye size={18} />
+            Ver
+          </button>
+        </div>
       </div>
     </div>
   );

@@ -6,6 +6,7 @@ import { create } from "zustand";
 interface ProductStore {
   products: Product[];
   fetchProducts: () => Promise<void>;
+  getProductById: (id: string) => Product | undefined;
 }
 
 export const useProductStore = create<ProductStore>((set) => ({
@@ -48,5 +49,11 @@ export const useProductStore = create<ProductStore>((set) => ({
     } catch (error) {
       console.error("Erro ao buscar produtos:", error);
     }
+  },
+
+  getProductById: (id: string): Product | undefined => {
+    return useProductStore
+      .getState()
+      .products.find((product: Product) => product.id === id);
   },
 }));

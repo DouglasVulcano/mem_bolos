@@ -3,7 +3,7 @@ import { useProductStore } from "@/stores/useProductStore";
 import { Product } from "@/types/Product";
 
 export function useProducts() {
-  const { products, fetchProducts } = useProductStore();
+  const { products, fetchProducts, getProductById } = useProductStore();
 
   useEffect(() => {
     if (products.length === 0) {
@@ -17,5 +17,5 @@ export function useProducts() {
     return acc;
   }, {} as Record<string, Product[]>);
 
-  return { products, groupedProducts };
+  return { products, groupedProducts, getProductById };
 }

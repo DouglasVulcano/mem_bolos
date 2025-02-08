@@ -1,5 +1,6 @@
 "use client";
 
+import { sendWhatsappNotification } from "@/utils/whatsappUtils";
 import BannerSection from "./components/BannerSection";
 import SectionTitle from "./components/SectionTitle";
 import ProductList from "./components/ProductList";
@@ -9,7 +10,6 @@ import Image from "next/image";
 
 import party_cake from "@/public/party_cake.png";
 import { Phone } from "lucide-react";
-import { sendWhatsappNotification } from "@/utils/whatsappUtils";
 
 export default function Home() {
   const { groupedProducts } = useProducts();
@@ -20,9 +20,7 @@ export default function Home() {
       <ProductList groupedProducts={groupedProducts} />
       <Section bgColor="white">
         <SectionTitle title="Bolos para Festa" bgColor="SaddleBrown" />
-
         <div className="flex flex-col lg:flex-row items-center lg:items-start justify-center gap-8 lg:gap-16 text-center lg:text-left">
-          {/* Imagem com novo estilo */}
           <div className="relative">
             <div className="absolute inset-0 rounded-full border-4 border-orange-400 blur-md" />
             <Image
@@ -32,8 +30,6 @@ export default function Home() {
               style={{ border: "2px solid SaddleBrown" }}
             />
           </div>
-
-          {/* Quadro de informações */}
           <div className="bg-orange-100 p-6 rounded-xl shadow-lg w-full max-w-sm flex flex-col gap-4">
             <ul className="text-gray-800 text-md space-y-2">
               <li>
@@ -43,7 +39,7 @@ export default function Home() {
               <li>🎨 Decorados</li>
               <li>
                 📏 Outros tamanhos -{" "}
-                <span className="italic">Consulte valores!</span>
+                <span className="italic">Consulte os valores!</span>
               </li>
             </ul>
             <p
@@ -59,7 +55,6 @@ export default function Home() {
           </div>
         </div>
       </Section>
-
       <Section bgColor="Cornsilk">
         <SectionTitle title="Sobre nós" bgColor="SaddleBrown" />
         Na <strong>M&M Doces</strong>, fazemos doces artesanais com ingredientes
