@@ -9,6 +9,7 @@ import Image from "next/image";
 
 import party_cake from "@/public/party_cake.png";
 import { Phone } from "lucide-react";
+import { sendWhatsappNotification } from "@/utils/whatsappUtils";
 
 export default function Home() {
   const { groupedProducts } = useProducts();
@@ -45,16 +46,16 @@ export default function Home() {
                 <span className="italic">Consulte valores!</span>
               </li>
             </ul>
-
-            {/* Botão CTA para WhatsApp */}
-            <a
-              href="https://wa.me/5511930738238?text=Olá!%20Gostaria%20de%20saber%20mais%20sobre%20os%20bolos!"
-              target="_blank"
-              rel="noopener noreferrer"
+            <p
+              onClick={() =>
+                sendWhatsappNotification(
+                  "Olá! Gostaria de saber mais sobre os bolos!"
+                )
+              }
               className="bg-green-600 text-white py-3 px-6 rounded-full text-lg font-semibold flex items-center justify-center gap-2 shadow-md hover:bg-green-700 transition"
             >
               <Phone /> Pedir pelo WhatsApp
-            </a>
+            </p>
           </div>
         </div>
       </Section>

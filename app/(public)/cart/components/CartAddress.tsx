@@ -1,6 +1,6 @@
 "use client";
 
-import { sendWhatsappNotification } from "@/utils/whatsappUtils";
+import { sendWhatsappCheckoutNotification } from "@/utils/whatsappUtils";
 import { AddressSchema } from "@/validations/addressSchema";
 import { useAddressForm } from "@/hooks/useAddressForm";
 import { useCart } from "@/hooks/useCart";
@@ -23,7 +23,7 @@ export default function CartAddress() {
 
   const onSubmit = (data: AddressSchema) => {
     saveAddressToStorage(data);
-    sendWhatsappNotification(data, cart);
+    sendWhatsappCheckoutNotification(data, cart);
     clearCart();
     router.push("/");
   };

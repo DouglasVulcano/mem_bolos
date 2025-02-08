@@ -1,7 +1,7 @@
 import { CartItem } from "@/stores/useCartStore";
 import { AddressSchema } from "@/validations/addressSchema";
 
-export const sendWhatsappNotification = async (
+export const sendWhatsappCheckoutNotification = async (
   data: AddressSchema,
   cart: CartItem[]
 ) => {
@@ -44,20 +44,17 @@ ${itemsMessage}
 ${addressMessage}
   `.trim();
 
-  // Codificar a mensagem para uso no link do WhatsApp
-  const encodedMessage = encodeURIComponent(fullMessage);
+  sendWhatsappNotification(fullMessage);
+};
 
-  // Obter o número do WhatsApp da variável de ambiente
+export const sendWhatsappNotification = (message: string) => {
   const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER;
-
-  // Verificar se é um dispositivo móvel
   const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+  const encodedMessage = encodeURIComponent(message);
 
-  // Gerar o link do WhatsApp
   const whatsappUrl = isMobile
-    ? `https://wa.me/${whatsappNumber}?text=${encodedMessage}` // Link para o app móvel
-    : `https://web.whatsapp.com/send?phone=${whatsappNumber}&text=${encodedMessage}`; // Link para o WhatsApp Web
+    ? `https://wa.me/${whatsappNumber}?text=${encodedMessage}`
+    : `https://web.whatsapp.com/send?phone=${whatsappNumber}&text=${encodedMessage}`;
 
-  // Abrir o link em uma nova aba
   window.open(whatsappUrl, "_blank");
 };
