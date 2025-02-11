@@ -27,7 +27,7 @@ export function PublicHeader() {
             </button>
           </Link>
         )}
-        {pathname === "/" && (
+        {pathname !== "/cart" && (
           <div className="relative ml-auto">
             <Link href="/cart">
               <button className="flex items-center space-x-2 hover:bg-orange-200 p-2 rounded-full transition">

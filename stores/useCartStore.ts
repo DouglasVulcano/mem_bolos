@@ -12,9 +12,10 @@ interface CartStore {
   addToCart: (product: Product, quantity?: number) => void;
   removeFromCart: (productId: string) => void;
   clearCart: () => void;
-  totalItems: () => number; // Agora conta o número de itens distintos
+  totalItems: () => number;
   validateCart: () => void;
   checkout: () => void;
+  isInCart: (id: string) => boolean;
 }
 
 export const useCartStore = create<CartStore>()(
@@ -42,7 +43,6 @@ export const useCartStore = create<CartStore>()(
               ),
             };
           }
-
           return {
             cart: [...state.cart, { ...product, quantity, createdAt: now }],
           };
@@ -77,6 +77,10 @@ export const useCartStore = create<CartStore>()(
       checkout: () => {
         localStorage.removeItem("cart-storage");
         set({ cart: [] });
+      },
+
+      isInCart: (id: string) => {
+        return get().cart.some((item) => item.id === id);
       },
     }),
     {

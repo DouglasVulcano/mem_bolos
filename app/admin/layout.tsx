@@ -1,7 +1,9 @@
 "use client";
 
 import React from "react";
-import { AdminHeader } from "@/app/admin/components/AdminHeader";
+import { AdminHeader } from "./components/AdminHeader";
+import { MobileNav } from "./components/MobileNav";
+import { Sidebar } from "./components/Sidebar";
 
 export default function AdminLayout({
   children,
@@ -9,11 +11,17 @@ export default function AdminLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="min-h-screen">
-      <AdminHeader title="Dashboard" />
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {children}
-      </main>
-    </div>
+    <>
+      <div className="flex h-screen">
+        <Sidebar />
+        <div className="flex-1 flex flex-col">
+          <AdminHeader />
+          <main className=" p-6 pb-16 lg:pb-6 ">
+            <div className="p-4 md:p-6 max-w-4xl mx-auto">{children}</div>
+          </main>
+          <MobileNav />
+        </div>
+      </div>
+    </>
   );
 }

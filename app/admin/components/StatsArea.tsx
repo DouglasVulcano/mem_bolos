@@ -44,6 +44,7 @@ export default function StatsArea() {
         </div>
         <TopProductsList topProducts={topProducts} />
       </div>
+
       <WeeklySalesChart orders={orders} />
     </>
   );

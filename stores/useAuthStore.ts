@@ -5,7 +5,7 @@ import {
   onAuthStateChanged,
   User,
 } from "firebase/auth";
-import auth from "@/config/firebase";
+import { auth } from "@/config/firebase";
 import { authSchema } from "@/validations/authSchema";
 import Cookies from "js-cookie";
 

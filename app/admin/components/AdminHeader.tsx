@@ -6,7 +6,7 @@ import { useAuthActions } from "@/hooks/useAuthActions";
 import { useRouter } from "next/navigation";
 
 interface AdminHeaderProps {
-  title: string;
+  title?: string;
 }
 
 export function AdminHeader({ title }: AdminHeaderProps) {
@@ -36,7 +36,7 @@ export function AdminHeader({ title }: AdminHeaderProps) {
 
   return (
     <header className="bg-white shadow-sm">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div className="mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         <div
           className="flex items-center cursor-pointer"
           onClick={() => navigate.push("/admin")}

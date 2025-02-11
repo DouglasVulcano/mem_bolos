@@ -12,8 +12,7 @@ interface ProductCardProps {
 }
 
 export default function ProductCard({ product }: ProductCardProps) {
-  const { cart, addToCart, removeFromCart } = useCartStore();
-  const isInCart = cart.some((item) => item.id === product.id);
+  const { addToCart, removeFromCart, isInCart } = useCartStore();
   const router = useRouter();
 
   return (
@@ -44,16 +43,22 @@ export default function ProductCard({ product }: ProductCardProps) {
       <div className="mt-4 flex flex-col gap-2">
         <button
           onClick={() =>
-            isInCart ? removeFromCart(product.id) : addToCart(product)
+            isInCart(product.id)
+              ? removeFromCart(product.id)
+              : addToCart(product)
           }
           className={`w-full flex items-center justify-center gap-2 px-4 py-2 rounded-lg transition-all active:scale-95 ${
-            isInCart
+            isInCart(product.id)
               ? "bg-green-100 text-green-600 hover:bg-green-200"
               : "bg-pink-500 text-white hover:bg-pink-600"
           }`}
         >
-          {isInCart ? <CheckCircle size={18} /> : <ShoppingCart size={18} />}
-          {isInCart ? "Remover" : "Comprar"}
+          {isInCart(product.id) ? (
+            <CheckCircle size={18} />
+          ) : (
+            <ShoppingCart size={18} />
+          )}
+          {isInCart(product.id) ? "Remover" : "Comprar"}
         </button>
 
         {/* Ações secundárias */}
