@@ -3,17 +3,37 @@ import "server-only";
 import { PaymentResponse } from "mercadopago/dist/clients/payment/commonTypes";
 
 export async function handleMercadoPagoPayment(paymentData: PaymentResponse) {
-  const metadata = paymentData.metadata;
-  const userEmail = metadata.user_email; // Os metadados do Mercado Pago são convertidos para snake_case
-  const testeId = metadata.teste_id; // Os metadados do Mercado Pago são convertidos para snake_case
-
-  // Faz alguma ação aqui - manda email pro usuario, libera acesso, erc.
-
-  console.log("Mercado Pago payment completed:", {
-    userEmail,
-    paymentData,
-    testeId,
-  });
+  sendTextMessage(
+    `Ola, Douglas! Seu pagamento de R$${paymentData.transaction_amount} foi realizado com sucesso!`
+  );
 
   return;
+}
+
+export async function sendTextMessage(message: string) {
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_EVOLUTION_BASE_URL}/message/sendText/${process.env.NEXT_PUBLIC_EVOLUTION_INSTANCE_NAME}`,
+      {
+        method: "POST",
+        headers: {
+          apikey: `${process.env.NEXT_PUBLIC_EVOLUTION_API_KEY}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          number: `${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER}@s.whatsapp.net`,
+          text: message,
+          preview_url: true,
+        }),
+      }
+    );
+
+    return await response.json();
+  } catch (error) {
+    console.error("Erro ao enviar mensagem via Evolution API:", error);
+    return {
+      error: true,
+      message: "Erro ao enviar mensagem",
+    };
+  }
 }
