@@ -3,7 +3,7 @@ import { Payment } from "mercadopago";
 import mpClient, { verifyMercadoPagoSignature } from "@/lib/mercado-pago";
 import { handleMercadoPagoPayment } from "@/server/mercado-pago/handle-payment";
 
-export async function POST(request: Request) {
+export async function GET(request: Request) {
   try {
     verifyMercadoPagoSignature(request);
 
@@ -22,10 +22,6 @@ export async function POST(request: Request) {
           await handleMercadoPagoPayment(paymentData);
         }
         break;
-      // case "subscription_preapproval": Eventos de assinatura
-      //   console.log("Subscription preapproval event");
-      //   console.log(data);
-      //   break;
       default:
         console.log("Unhandled event type:", type);
     }

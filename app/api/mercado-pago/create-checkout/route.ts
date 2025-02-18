@@ -32,6 +32,7 @@ export async function POST(req: NextRequest) {
           failure: `${req.headers.get("origin")}/?status=falha`,
           pending: `${req.headers.get("origin")}/api/mercado-pago/pending`, // Criamos uma rota para lidar com pagamentos pendentes
         },
+        notification_url: `${req.headers.get("origin")}/api/mercado-pago/webhook`,
       },
     });
 
