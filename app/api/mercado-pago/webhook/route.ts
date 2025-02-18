@@ -3,7 +3,7 @@ import { Payment } from "mercadopago";
 import mpClient, { verifyMercadoPagoSignature } from "@/lib/mercado-pago";
 import { handleMercadoPagoPayment } from "@/server/mercado-pago/handle-payment";
 
-export async function GET(request: Request) {
+export async function POST(request: Request) {
   try {
     verifyMercadoPagoSignature(request);
 
