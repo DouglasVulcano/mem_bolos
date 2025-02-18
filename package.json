@@ -10,9 +10,11 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
+    "@mercadopago/sdk-react": "^0.0.24",
     "firebase": "^11.2.0",
     "js-cookie": "^2.2.1",
     "lucide-react": "^0.474.0",
+    "mercadopago": "^2.3.0",
     "next": "15.1.6",
     "next-intl": "^3.26.3",
     "react": "^19.0.0",

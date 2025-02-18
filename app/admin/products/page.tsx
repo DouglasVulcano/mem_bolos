@@ -1,12 +1,12 @@
 "use client";
 
-import { Plus } from "lucide-react";
-import { useProducts } from "@/hooks/useProducts";
-import { Product } from "@/types/Product";
-import { useState } from "react";
 import { CategoryFilter } from "./components/CategoryFilter";
 import { CategoryList } from "./components/CategoryList";
 import { ProductCard } from "./components/ProductCard";
+import { useProducts } from "@/hooks/useProducts";
+import { Product } from "@/types/Product";
+import React, { useState } from "react";
+import { Plus } from "lucide-react";
 
 export default function ProductsPage() {
   const { groupedProducts } = useProducts();
@@ -24,20 +24,18 @@ export default function ProductsPage() {
     alert(`Deletar produto com ID: ${productId}`);
 
   return (
-    <>
+    <React.Fragment>
       <CategoryFilter
         categories={categories}
         selectedCategory={selectedCategory}
         onSelectCategory={setSelectedCategory}
         onAddCategory={handleAddCategory}
       />
-
       <CategoryList
         categories={categories}
         selectedCategory={selectedCategory}
         onSelectCategory={setSelectedCategory}
       />
-
       {categories
         .filter(
           (category) => !selectedCategory || category === selectedCategory
@@ -68,6 +66,6 @@ export default function ProductsPage() {
             </div>
           </div>
         ))}
-    </>
+    </React.Fragment>
   );
 }

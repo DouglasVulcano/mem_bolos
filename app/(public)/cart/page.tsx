@@ -1,13 +1,49 @@
 "use client";
 
+import { AddressSchema } from "@/validations/addressSchema";
+import { useAddressForm } from "@/hooks/useAddressForm";
 import SectionTitle from "../components/SectionTitle";
-import CartAddress from "./components/CartAddress";
+import useMercadoPago from "@/hooks/useMercadoPago";
+import CartForm from "./components/CartForm";
 import CartList from "./components/CartList";
 import { useCart } from "@/hooks/useCart";
 import Link from "next/link";
+import React from "react";
 
 export default function CartPage() {
   const { cart } = useCart();
+
+  // const router = useRouter();
+  const { createMercadoPagoCheckout } = useMercadoPago();
+
+  const {
+    /*, cart, clearCart*/
+  } = useCart();
+
+  const { saveAddressToStorage } = useAddressForm();
+
+  const handleSubmit = (data: AddressSchema) => {
+    createMercadoPagoCheckout({
+      payer: {
+        name: data.customerName,
+      },
+      items: cart.map((item) => ({
+        id: item.id,
+        title: item.title,
+        unit_price: item.price,
+        quantity: item.quantity,
+        currency_id: "BRL",
+        category: item.category,
+      })),
+    });
+
+    saveAddressToStorage(data);
+    /*
+      sendWhatsappCheckoutNotification(data, cart);
+      clearCart();
+      router.push("/");
+      */
+  };
 
   return (
     <main className="min-h-screen bg-white p-6">
@@ -22,10 +58,10 @@ export default function CartPage() {
           </Link>
         </div>
       ) : (
-        <>
+        <React.Fragment>
           <CartList />
-          <CartAddress />
-        </>
+          <CartForm onSubmit={handleSubmit} />
+        </React.Fragment>
       )}
     </main>
   );

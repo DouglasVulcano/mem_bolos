@@ -14,7 +14,7 @@ export default function StatsArea() {
   const { orders } = useOrders();
 
   return (
-    <>
+    <React.Fragment>
       <div className="mb-6">
         <select
           value={dateFilter}
@@ -46,6 +46,6 @@ export default function StatsArea() {
       </div>
 
       <WeeklySalesChart orders={orders} />
-    </>
+    </React.Fragment>
   );
 }

@@ -11,7 +11,7 @@ export default function AdminLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <>
+    <React.Fragment>
       <div className="flex h-screen">
         <Sidebar />
         <div className="flex-1 flex flex-col">
@@ -22,6 +22,6 @@ export default function AdminLayout({
           <MobileNav />
         </div>
       </div>
-    </>
+    </React.Fragment>
   );
 }

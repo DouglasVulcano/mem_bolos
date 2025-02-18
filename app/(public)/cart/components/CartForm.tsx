@@ -1,16 +1,17 @@
 "use client";
 
-import { sendWhatsappCheckoutNotification } from "@/utils/whatsappUtils";
 import { AddressSchema } from "@/validations/addressSchema";
 import { useAddressForm } from "@/hooks/useAddressForm";
 import { useCart } from "@/hooks/useCart";
 import InputField from "./InputField";
-import { useRouter } from "next/navigation";
+import React from "react";
 
-export default function CartAddress() {
-  const router = useRouter();
+interface CartFormProps {
+  onSubmit: (data: AddressSchema) => void;
+}
 
-  const { totalPrice, cart, clearCart } = useCart();
+export default function CartForm({ onSubmit }: CartFormProps) {
+  const { totalPrice } = useCart();
   const {
     register,
     handleSubmit,
@@ -18,22 +19,13 @@ export default function CartAddress() {
     loading,
     invalidCep,
     handleCepChange,
-    saveAddressToStorage,
   } = useAddressForm();
 
-  const onSubmit = (data: AddressSchema) => {
-    saveAddressToStorage(data);
-    sendWhatsappCheckoutNotification(data, cart);
-    clearCart();
-    router.push("/");
-  };
-
   return (
-    <>
+    <React.Fragment>
       <h2 className="text-xl font-semibold mb-6 mt-6">
         Informações do Comprador
       </h2>
-
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         <div className="p-6 bg-gray-100 rounded-lg shadow-sm">
           <InputField
@@ -42,7 +34,6 @@ export default function CartAddress() {
             error={errors.customerName?.message}
             className="mb-4"
           />
-
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
             <InputField
               label="CEP"
@@ -59,7 +50,6 @@ export default function CartAddress() {
               disabled
             />
           </div>
-
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
             <InputField
               label="Número"
@@ -74,7 +64,6 @@ export default function CartAddress() {
               disabled
             />
           </div>
-
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
             <InputField
               label="Cidade"
@@ -89,19 +78,16 @@ export default function CartAddress() {
               disabled
             />
           </div>
-
           <InputField
             label="Complemento"
             register={register("complement")}
             error={errors.complement?.message}
             className="mb-4"
           />
-
           {loading && (
             <p className="text-blue-500 text-sm mt-2">Buscando endereço...</p>
           )}
         </div>
-
         <div className="mt-6 bg-gray-100 rounded-lg p-6">
           <h2 className="text-xl font-semibold">
             Total: R$ {totalPrice.toFixed(2)}
@@ -115,6 +101,6 @@ export default function CartAddress() {
           </button>
         </div>
       </form>
-    </>
+    </React.Fragment>
   );
 }
