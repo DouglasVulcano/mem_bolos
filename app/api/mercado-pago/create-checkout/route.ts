@@ -20,7 +20,6 @@ export async function POST(req: NextRequest) {
         payment_methods: {
           excluded_payment_types: [
             { id: "credit_card" },
-            { id: "debit_card" },
             { id: "ticket" }, // Boleto
             { id: "atm" }, // Caixa eletrônico
           ],
