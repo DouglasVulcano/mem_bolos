@@ -42,6 +42,8 @@ export async function POST(req: NextRequest) {
 
     const createdPreference = await preference.create(bodyData);
 
+    console.log(createdPreference);
+
     if (!createdPreference.id) {
       throw new Error("No preferenceID");
     }
