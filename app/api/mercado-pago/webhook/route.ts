@@ -8,7 +8,7 @@ export async function POST(request: Request) {
     verifyMercadoPagoSignature(request);
 
     const body = await request.json();
-
+    console.log(body);
     const { type, data } = body;
 
     switch (type) {
