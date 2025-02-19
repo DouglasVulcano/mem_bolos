@@ -9,7 +9,7 @@ export async function POST(req: NextRequest) {
   try {
     const preference = new Preference(mpClient);
 
-    const createdPreference = await preference.create({
+    const bodyData = {
       body: {
         external_reference: testeId, // IMPORTANTE: Isso aumenta a pontuação da sua integração com o Mercado Pago - É o id da compra no nosso sistema
         metadata: {
@@ -32,9 +32,15 @@ export async function POST(req: NextRequest) {
           failure: `${req.headers.get("origin")}/?status=falha`,
           pending: `${req.headers.get("origin")}/api/mercado-pago/pending`, // Criamos uma rota para lidar com pagamentos pendentes
         },
-        notification_url: `${req.headers.get("origin")}/api/mercado-pago/webhook`,
+        notification_url: `${req.headers.get(
+          "origin"
+        )}/api/mercado-pago/webhook`,
       },
-    });
+    };
+
+    console.log(bodyData);
+
+    const createdPreference = await preference.create(bodyData);
 
     if (!createdPreference.id) {
       throw new Error("No preferenceID");

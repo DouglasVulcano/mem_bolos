@@ -13,15 +13,15 @@ export async function handleMercadoPagoPayment(paymentData: PaymentResponse) {
 export async function sendTextMessage(message: string) {
   try {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_EVOLUTION_BASE_URL}/message/sendText/${process.env.NEXT_PUBLIC_EVOLUTION_INSTANCE_NAME}`,
+      `${process.env.EVOLUTION_BASE_URL}/message/sendText/${process.env.EVOLUTION_INSTANCE_NAME}`,
       {
         method: "POST",
         headers: {
-          apikey: `${process.env.NEXT_PUBLIC_EVOLUTION_API_KEY}`,
+          apikey: `${process.env.PUBLIC_EVOLUTION_API_KEY}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          number: `${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER}@s.whatsapp.net`,
+          number: `${process.env.WHATSAPP_NUMBER}@s.whatsapp.net`,
           text: message,
           preview_url: true,
         }),
